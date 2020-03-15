@@ -10,7 +10,8 @@ public class MeetingTest {
 
     @Test
     public void testStringConversion() throws MoException {
-        assertEquals("CS2113T Meeting, 1, 14:00, 1, 15:00", new Meeting("CS2113T Meeting", 1, LocalTime.parse("14:00"), 1, LocalTime.parse("15:00")).toString());
+        Meeting m = new Meeting("CS2113T Meeting", 1, LocalTime.parse("14:00"), 1, LocalTime.parse("15:00"));
+        assertEquals("CS2113T Meeting, 1, 14:00, 1, 15:00", m.toString());
     }
 
 }
