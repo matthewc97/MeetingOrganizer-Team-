@@ -11,7 +11,7 @@ public class Meeting {
 
     public Meeting(String meetingName, Integer startDay, LocalTime startTime, Integer endDay, LocalTime endTime) throws MoException {
 
-        if(startDay < 0 || startDay > 6 || endDay < 0 || endDay > 6) {
+        if (startDay < 0 || startDay > 6 || endDay < 0 || endDay > 6) {
             throw new MoException("Start and/or End Day out of range.");
         }
 

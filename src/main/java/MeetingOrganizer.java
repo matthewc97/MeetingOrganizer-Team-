@@ -16,10 +16,9 @@ public class MeetingOrganizer {
         switch (userInput) {
             case "1":
                 System.out.println("You have selected new scheduled meeting");
-                Scanner in = new Scanner(System.in);
-
 
                 // Test add meeting
+                Scanner in = new Scanner(System.in);
                 System.out.println("What do you want to name your meeting?");
                 String meetingName = in.nextLine(); // eg. CS2113 Meeting
                 System.out.println("Enter meeting details: <Start Day> <Start Time> <End Day> <End Time>");
