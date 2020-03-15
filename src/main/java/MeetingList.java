@@ -1,5 +1,8 @@
 import java.util.ArrayList;
 
+/**
+ * TESTING SUMMARY DOC.
+ */
 public class MeetingList {
     private ArrayList<Meeting> meetingList = new ArrayList<>();
 

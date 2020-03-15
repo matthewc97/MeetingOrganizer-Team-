@@ -1,4 +1,8 @@
-public class MoException extends Exception{
+/**
+ * TESTING SUMMARY DOC.
+ */
+public class MoException extends Exception {
+
     public MoException(String s) {
         super(s);
     }

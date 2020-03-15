@@ -2,6 +2,9 @@ import java.util.ArrayList;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+/**
+ * TESTING SUMMARY DOC.
+ */
 public class Meeting {
     private String meetingName;
     private Integer startDay;
@@ -45,6 +48,7 @@ public class Meeting {
     public void editTime() {
 
     }
+
     public String toString() {
         return meetingName + ", " + startDay + ", " + startTime + ", " + endDay + ", " + endTime;
     }
