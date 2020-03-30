@@ -26,8 +26,7 @@ public class TeamMemberList {
         this.teamMemberList.set(index, member);
     }
 
-    public ArrayList<TeamMember> getTeamMemberList() {
-
+    public ArrayList<TeamMember> getTeamMemberList() throws IndexOutOfBoundsException {
         return this.teamMemberList;
     }
 

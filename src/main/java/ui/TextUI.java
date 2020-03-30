@@ -177,6 +177,10 @@ public class TextUI {
         System.out.println("Item does not exist.");
     }
 
+    public static void displayInvalidTeamMember() {
+        System.out.println("Invalid team member specified.");
+    }
+
     public static void showLoadingError() {
         System.out.println("There are no previous records of meetings, let's create a new one!");
     }

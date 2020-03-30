@@ -118,61 +118,61 @@ public class MeetingOrganizer {
                 System.out.println(e.getMessage());
             }
             break;
-        case "edit": // edit <Member Number> <busy/free> <startDay> <startTime> <endDay> <endTime> (eg. edit 0 busy 2 22:00 2 23:00)
-            memberNumber = Integer.parseInt(userInputWords[1]);
-            member = myTeamMemberList.getTeamMemberList().get(memberNumber);
-            String memberName = member.getName();
-            startDay = Integer.parseInt(userInputWords[3]);
-            String startTimeString = userInputWords[4];
-            endDay = Integer.parseInt(userInputWords[5]);
-            String endTimeString = userInputWords[6];
-
-            if (userInputWords[2].equals("busy")) {
-                member.addBusyBlocks(memberName, startDay, startTimeString, endDay, endTimeString);
-            } else if (userInputWords[2].equals("free")) {
-                member.addFreeBlocks(memberName, startDay, startTimeString, endDay, endTimeString);
-            }
-            break;
         case "contacts":  // contacts
-            TextUI.teamMemberListMsg(myTeamMemberList.getTeamMemberList(), mainUser.getName());
+            if (myTeamMemberList.getSize() == 0) {
+                throw new MoException("Contact list is empty, try adding the timetable of a contact first.");
+            } else if (userInputWords.length > 1) {
+                throw new MoException("Invalid command format.");
+            } else {
+                TextUI.teamMemberListMsg(myTeamMemberList.getTeamMemberList(), mainUser.getName());
+            }
             break;
         case "timetable": // timetable OR timetable 1 OR timetable <Member Number 1> <Member Number 2> (eg. timetable 0 1 3)
-            if (userInputWords.length > 1) {
-                ArrayList<TeamMember> myScheduleList = new ArrayList<TeamMember>();
-                for (int i = 1; i < userInputWords.length; i++) {
-                    memberNumber = Integer.parseInt(userInputWords[i]);
-                    member = myTeamMemberList.getTeamMemberList().get(memberNumber);
-                    myScheduleList.add(member);
+            try {
+                if (myTeamMemberList.getSize() == 0) {
+                    throw new MoException("Timetable is empty, try adding the timetable of a contact first.");
+                } else if (userInputWords.length > 1) {
+                    ArrayList<TeamMember> myScheduleList = new ArrayList<TeamMember>();
+                    for (int i = 1; i < userInputWords.length; i++) {
+                        memberNumber = Integer.parseInt(userInputWords[i]);
+                        member = myTeamMemberList.getTeamMemberList().get(memberNumber);
+                        myScheduleList.add(member);
+                    }
+                    ScheduleHandler myScheduleHandler = new ScheduleHandler(myScheduleList);
+                    Boolean[][] myMasterSchedule;
+                    myMasterSchedule = myScheduleHandler.getMasterSchedule();
+                    System.out.println("Timetable of the selected team member/s:");
+                    TextUI.printTimetable(myMasterSchedule);
+                } else {
+                    System.out.println("Your timetable:");
+                    TextUI.printTimetable(mainUser.getSchedule());
                 }
-                ScheduleHandler myScheduleHandler = new ScheduleHandler(myScheduleList);
-                Boolean[][] myMasterSchedule;
-                myMasterSchedule = myScheduleHandler.getMasterSchedule();
-                System.out.println("Timetable of the selected team member/s:");
-                TextUI.printTimetable(myMasterSchedule);
-            } else {
-                System.out.println("Your timetable:");
-                TextUI.printTimetable(mainUser.getSchedule());
+            } catch (IndexOutOfBoundsException e) {
+                TextUI.displayInvalidTeamMember();
             }
-
             break;
         case "schedule": //schedule <Meeting Name> <Start Day> <Start Time> <End Day> <End Time> (eg. schedule meeting 3 17:00 3 19:00)
-            String meetingName = userInputWords[1];
-            startDay = Integer.parseInt(userInputWords[2]);
-            LocalTime startTime = LocalTime.parse(userInputWords[3]);
-            endDay = Integer.parseInt(userInputWords[4]);
-            LocalTime endTime = LocalTime.parse(userInputWords[5]);
+            if (userInputWords.length != 6) {
+                throw new MoException("Invalid command format.");
+            }
 
             try {
+                String meetingName = userInputWords[1];
+                startDay = Integer.parseInt(userInputWords[2]);
+                LocalTime startTime = LocalTime.parse(userInputWords[3]);
+                endDay = Integer.parseInt(userInputWords[4]);
+                LocalTime endTime = LocalTime.parse(userInputWords[5]);
+
                 if (ScheduleHandler.isValidMeeting(mainUser, startDay, startTime, endDay, endTime)) {
                     Meeting myMeeting = new Meeting(meetingName, startDay, startTime, endDay, endTime);
                     myMeetingList.add(myMeeting);
                     mainUser.addBusyBlocks(meetingName, startDay, userInputWords[3], endDay, userInputWords[5]);
                     TextUI.meetingListSizeMsg(myMeetingList);
                 } else {
-                    System.out.println("Schedule is blocked at that timeslot");
+                    System.out.println("Schedule is blocked at that time slot");
                 }
             } catch (MoException e) {
-                System.out.println(e.getMessage() + ", try again.");
+                System.out.println(e.getMessage());
             }
             // Replace main user's timetable with updated meeting blocks into TeamMember.TeamMemberList for storage purposes.
             myTeamMemberList.set(0, mainUser);
